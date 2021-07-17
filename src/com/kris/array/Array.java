@@ -141,4 +141,11 @@ public class Array<E> {
             remove(index);
     }
 
+    public E getLast() {
+        return get(size - 1);
+    }
+
+    public E getFirst() {
+        return get(0);
+    }
 }

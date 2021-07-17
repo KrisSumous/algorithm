@@ -1,16 +1,16 @@
-package com.kris.stack;
+package com.kris.queue;
 
 import com.kris.array.Array;
 
-public class ArrayStack<E> implements Stack<E> {
+public class ArrayQueue<E> implements Queue<E> {
 
     private Array<E> array;
 
-    public ArrayStack(int capacity) {
+    public ArrayQueue(int capacity) {
         array = new Array<>(capacity);
     }
 
-    public ArrayStack() {
+    public ArrayQueue() {
         array = new Array<>();
     }
 
@@ -25,31 +25,33 @@ public class ArrayStack<E> implements Stack<E> {
     }
 
     @Override
-    public void push(E e) {
+    public void enqueue(E e) {
         array.addLast(e);
     }
 
     @Override
-    public E pop() {
-        return array.removeLast();
+    public E dequeue() {
+        return array.removeFirst();
     }
 
     @Override
-    public E peek() {
-        return array.getLast();
+    public E getFront() {
+        return array.getFirst();
     }
 
     @Override
     public String toString(){
         StringBuilder res = new StringBuilder();
-        res.append("Stack: ");
-        res.append('[');
+        res.append("Queue: ");
+        res.append("front [");
         for(int i = 0 ; i < array.getSize() ; i ++){
             res.append(array.get(i));
             if(i != array.getSize() - 1)
                 res.append(", ");
         }
-        res.append("] top");
+        res.append("] tail");
         return res.toString();
     }
+
+
 }
