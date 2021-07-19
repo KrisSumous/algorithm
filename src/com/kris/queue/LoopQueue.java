@@ -42,12 +42,25 @@ public class LoopQueue<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        return null;
+        if (isEmpty()) {
+            throw new IllegalArgumentException("Cannot dequeue from an empty queue.");
+        }
+        E ret = data[front];
+        data[front] = null;
+        front = (front + 1) % data.length;
+        size--;
+        if (size == getCapacity() / 4 && getCapacity() /2 != 0) {
+            resize(getCapacity() / 2);
+        }
+        return ret;
     }
 
     @Override
     public E getFront() {
-        return null;
+        if (isEmpty()) {
+            throw new IllegalArgumentException("Cannot dequeue from an empty queue.");
+        }
+        return data[front];
     }
 
     private void resize(int newCapacity){
