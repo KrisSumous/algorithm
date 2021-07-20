@@ -34,7 +34,7 @@ public class LinkedList<E> {
         return size;
     }
 
-    // 判断链表是否唯恐
+    // 判断链表是否为空
     public boolean isEmpty() {
         return size == 0;
     }
