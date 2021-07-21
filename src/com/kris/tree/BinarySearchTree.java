@@ -1,5 +1,9 @@
 package com.kris.tree;
 
+import com.kris.array.Array;
+import com.kris.stack.ArrayStack;
+import com.kris.stack.Stack;
+
 // 二分搜索树
 public class BinarySearchTree<E extends Comparable<E>> {
 
@@ -42,7 +46,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
         }
         if (e.compareTo(node.e) < 0) {
             node.left = add(node.left, e);
-        } else  if (e.compareTo(node.e) > 0) {
+        } else if (e.compareTo(node.e) > 0) {
             node.right = add(node.right, e);
         }
         return node;
@@ -66,11 +70,107 @@ public class BinarySearchTree<E extends Comparable<E>> {
         }
     }
 
+    // 前序遍历
     public void preOrder() {
-        preOrder(root);
+        preOrderNoRecursion(root);
     }
 
+    // 前序遍历递归
     private void preOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        System.out.println(node.e);
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+
+    // 前序遍历 非递归
+    private void preOrderNoRecursion(Node node) {
+        if (node == null) {
+            return;
+        }
+        Stack<Node> stack = new ArrayStack<>();
+        stack.push(node);
+        while (!stack.isEmpty()) {
+            Node cur = stack.pop();
+            System.out.println(cur.e);
+            if (cur.right != null) {
+                stack.push(cur.right);
+            }
+            if (cur.left != null) {
+                stack.push(cur.left);
+            }
+        }
+    }
+
+    public void inOrder() {
+        inOrderNoRecursion(root);
+    }
+
+    private void inOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        inOrder(node.left);
+        System.out.println(node.e);
+        inOrder(node.right);
+    }
+
+    private void inOrderNoRecursion(Node node) {
+        if (node == null) {
+            return;
+        }
+        Stack<Node> stack = new ArrayStack<>();
+        Node pop = node;
+        while (!stack.isEmpty() || pop != null) {
+            while (pop != null) {
+                stack.push(pop);
+                pop = pop.left;
+            }
+            Node pop1 = stack.pop();
+            System.out.println(pop1.e);
+
+            pop = pop1.right;
+
+        }
+    }
+
+    public void postOrder() {
+        postOrder(root);
+    }
+
+    private void postOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.println(node.e);
+    }
+
+    private void postOrderNoRecursion(Node node) {
+        if (node == null) {
+            return;
+        }
+        Node pre = null;
+        Node node1 = node;
+        Stack<Node> stack = new ArrayStack<>();
+
+        while (!stack.isEmpty() || node1 != null) {
+            while (node1 != null) {
+                stack.push(node1);
+                node1 = node1.left;
+            }
+            Node node2 = stack.peek();
+            if (node2.right == null || pre == node2.right) {
+                stack.pop();
+                pre = node2;
+                System.out.println(node2.e);
+            } else {
+                node1 = node2.right;
+            }
+        }
 
     }
 
