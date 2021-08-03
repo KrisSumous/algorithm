@@ -1,6 +1,5 @@
 package com.kris.tree;
 
-import com.kris.array.Array;
 import com.kris.stack.ArrayStack;
 import com.kris.stack.Stack;
 
@@ -137,7 +136,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
     }
 
     public void postOrder() {
-        postOrder(root);
+        postOrderNoRecursion(root);
     }
 
     private void postOrder(Node node) {
