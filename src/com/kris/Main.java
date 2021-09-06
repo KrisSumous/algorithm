@@ -18,5 +18,10 @@ public class Main {
 
 
         binarySearchTree.inOrder();
+
+
     }
+
+
+
 }

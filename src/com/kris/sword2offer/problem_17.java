@@ -15,4 +15,52 @@ package com.kris.sword2offer;
 还要求终止列号大于起始列号。同理需要打印第四步的条件是至少有三行两列，因此要求终止行号比起始行号至少大2，同时终止列号大于起始列号。
  */
 public class problem_17 {
+    public static void printMatrixClockWisely(int[][] numbers) {
+        if (numbers == null) {
+            return;
+        }
+        // 记录一圈开始位置的行
+        int x = 0;
+        // 记录一圈开始位置的列
+        int y = 0;
+        // 对每一圈进行处理
+        // 行号最大是(numbers.length - 1) / 2
+        // 列号最大是(numbers[0].length - 1) / 2
+        while (x * 2 < numbers.length && y * 2 < numbers[0].length) {
+            printMatrixInCircle(numbers, x, y);
+            x++;
+            y++;
+        }
+    }
+
+    private static void printMatrixInCircle(int[][] numbers, int x, int y) {
+        int rows = numbers.length;
+        int cols = numbers[0].length;
+
+        // 输出环上面的一行，包括最中的那个数字
+        for (int i = y; i <= cols - y - 1; i++) {
+            System.out.println(numbers[x][i]);
+        }
+        // 环的高度至少为2才会输出右边的一列
+        // rows - x - 1 : 表示环最下的那一行的行号
+        if (rows - x - 1 > x) {
+            // 因为右边那一列最上边已经被输出，所以从x+1开始
+            for (int i = x + 1; i <= rows - x - 1; i++) {
+                System.out.println(numbers[i][cols - y - 1]);
+            }
+        }
+        // 环的高度至少是2并且环的宽度至少是2才会输出下面那一行
+        // cols - y - 1 : 表示环最右那一列的行号
+        if (rows - x - 1 > x && cols - y - 1 > y) {
+            for (int i = cols - y - 2; i >= y; i--) {
+                System.out.println(numbers[rows - x - 1][i]);
+            }
+        }
+        // 环的宽度至少为2并且高度至少为3才会输出最左边那一列
+        if (cols - y - 1 > y && rows - x - 2 > x) {
+            for (int i = rows - x - 2; i >= x + 1; i--) {
+                System.out.println(numbers[i][y]);
+            }
+        }
+    }
 }
