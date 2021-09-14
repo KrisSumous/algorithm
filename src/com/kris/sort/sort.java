@@ -1,26 +1,35 @@
 package com.kris.sort;
 
+import java.util.Arrays;
+
 public class sort {
 
     public static void main(String[] args) {
-        int[] numbers = shellSort(new int[]{3, 5, 7, 6, 4, 2, 1});
-        for (int i = 0; i < numbers.length; i++) {
-            System.out.println(numbers[i]);
+        int[] numbers = quickSort(new int[]{3, 5, 7, 6, 4, 2, 1});
+        for (int number : numbers) {
+            System.out.println(number);
         }
+    }
+
+    // 交换位置函数
+    private static void swap(int[] arr, int i, int j) {
+        if (i >= arr.length || j >= arr.length) {
+            return;
+        }
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 
     // 冒泡排序
     public static int[] bubbleSort(int[] numbers) {
-        int tmp;
         int size = numbers.length;
         boolean flag = true;
         for (int i = 0; i < size - 1 && flag; i++) {
             flag = false;
             for (int j = 0; j < size - 1 - i; j++) {
                 if (numbers[j] > numbers[j + 1]) {
-                    tmp = numbers[j];
-                    numbers[j] = numbers[j + 1];
-                    numbers[j + 1] = tmp;
+                    swap(numbers, j, j + 1);
                     flag = true;
                 }
             }
@@ -31,7 +40,6 @@ public class sort {
     // 选择排序
     public static int[] selectSort(int[] numbers) {
         int size = numbers.length;
-        int tmp;
         for (int i = 0; i < size - 1; i++) {
             int k = i;
             for (int j = size - 1; j > i; j--) {
@@ -39,9 +47,7 @@ public class sort {
                     k = j;
                 }
             }
-            tmp = numbers[i];
-            numbers[i] = numbers[k];
-            numbers[k] = tmp;
+            swap(numbers, i, k);
         }
         return numbers;
     }
@@ -90,7 +96,7 @@ public class sort {
     }
 
     // 堆排序
-    public static void heapSort(int[] numbers) {
+    public static int[] heapSort(int[] numbers) {
         int arrayLength = numbers.length;
         // 循环建堆
         for (int i = 0; i < arrayLength - 1; i++) {
@@ -99,6 +105,7 @@ public class sort {
             // 交换堆顶和最后一个元素
             swap(numbers, 0, arrayLength - 1 - i);
         }
+        return numbers;
     }
 
     // 对numbers数组从0到lastIndex建大顶堆
@@ -129,44 +136,63 @@ public class sort {
         }
     }
 
-    public static void swap(int[] numbers, int i, int j) {
-        int tmp = numbers[i];
-        numbers[i] = numbers[j];
-        numbers[j] = tmp;
-    }
-
-
     // 快速排序
     public static int[] quickSort(int[] numbers) {
-        if (numbers.length > 0) {
-            quickSort(numbers, 0, numbers.length - 1);
-        }
+        quickSort(numbers, 0, numbers.length - 1);
         return numbers;
     }
 
-    private static void quickSort(int[] numbers, int low, int high) {
-        if (low >= high) {
+    private static void quickSort(int[] numbers, int left, int right) {
+        if (left >= right) {
             return;
         }
-        int middle = getMiddle(numbers, low, high);
-        quickSort(numbers, low, middle - 1);
-        quickSort(numbers, middle + 2, high);
+        int base = numbers[left];
+        int i = left, j = right;
+        while (i < j) {
+            while (i < j && numbers[j] >= base) {
+                j--;
+            }
+            while (i < j && numbers[i] <= base) {
+                i++;
+            }
+            if (i < j) {
+                swap(numbers, i, j);
+            }
+        }
+        numbers[left] = numbers[i];
+        numbers[i] = base;
+        quickSort(numbers, left, i - 1);
+        quickSort(numbers, i + 1, right);
     }
 
-    private static int getMiddle(int[] numbers, int low, int high) {
-        int tmp = numbers[low];
-        while (low < high) {
-            while (low < high && numbers[high] > tmp) {
-                high--;
-            }
-            numbers[low] = numbers[high];
-            while (low < high && numbers[low] < tmp) {
-                low++;
-            }
-            numbers[high] = numbers[low];
+    // 归并排序
+    public static int[] mergeSort(int[] numbers) {
+        if (numbers.length < 2) {
+            return numbers;
         }
-        numbers[low] = tmp;
-        return low;
+        int mid = numbers.length >> 1;
+        int[] left = Arrays.copyOfRange(numbers, 0, mid);
+        int[] right = Arrays.copyOfRange(numbers, mid, numbers.length);
+        return mergeSort(mergeSort(left), mergeSort(right));
+    }
+
+    private static int[] mergeSort(int[] left, int[] right) {
+        int[] result = new int[left.length + right.length];
+        int i = 0, j = 0, k = 0;
+        while (i < left.length && j < right.length) {
+            if (left[i] < right[j]) {
+                result[k++] = left[i++];
+            } else {
+                result[k++] = right[j++];
+            }
+        }
+        while (i < left.length) {
+            result[k++] = left[i++];
+        }
+        while (j < right.length) {
+            result[k++] = right[j++];
+        }
+        return result;
     }
 
 }

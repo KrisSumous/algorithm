@@ -14,8 +14,8 @@ import java.util.Stack;
  */
 public class problem_18 {
 
-    private Stack<Integer> stack = new Stack<>();
-    private Stack<Integer> minStack = new Stack<>();    // 辅助栈：栈顶永远保存stack中当前最小的元素
+    private final Stack<Integer> stack = new Stack<>();
+    private final Stack<Integer> minStack = new Stack<>();    // 辅助栈：栈顶永远保存stack中当前最小的元素
 
     public void push(int data) {
         stack.push(data);
