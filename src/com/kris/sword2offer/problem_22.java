@@ -1,5 +1,8 @@
 package com.kris.sword2offer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
 #### 一、题目
 
@@ -15,5 +18,51 @@ package com.kris.sword2offer;
 不难看出保存路径的数据结构实际上是一个枝， 因为路径要与递归调用状态一致，而递归调用的本质就是一个压栈和出栈的过程。
  */
 public class problem_22 {
+    public static void main(String[] args) {
+        BinaryTreeNode node10 = new BinaryTreeNode(10, null, null);
+        BinaryTreeNode node9 = new BinaryTreeNode(9, null, null);
+        BinaryTreeNode node8 = new BinaryTreeNode(8, null, null);
+        BinaryTreeNode node7 = new BinaryTreeNode(7, null, null);
+        BinaryTreeNode node6 = new BinaryTreeNode(6, node10, null);
+        BinaryTreeNode node5 = new BinaryTreeNode(5, null, node8);
+        BinaryTreeNode node4 = new BinaryTreeNode(4, node9, null);
+        BinaryTreeNode node3 = new BinaryTreeNode(3, node6, node7);
+        BinaryTreeNode node2 = new BinaryTreeNode(2, node4, node5);
+        BinaryTreeNode node1 = new BinaryTreeNode(1, node2, node3);
 
+        findPath(node1, 16);
+    }
+
+    public static class BinaryTreeNode {
+        public BinaryTreeNode(int value, BinaryTreeNode left, BinaryTreeNode right) {
+            this.value = value;
+            this.left = left;
+            this.right = right;
+        }
+
+        int value;
+        BinaryTreeNode left;
+        BinaryTreeNode right;
+    }
+
+    public static void findPath(BinaryTreeNode root, int expectedSum) {
+        List<Integer> list = new ArrayList<>();
+        findPath(root, 0, expectedSum, list);
+    }
+
+    private static void findPath(BinaryTreeNode root, int curNum, int expectedSum, List<Integer> result) {
+        if (root != null) {
+            curNum += root.value;
+            result.add(root.value);
+            if (curNum < expectedSum) {
+                findPath(root.left, curNum, expectedSum, result);
+                findPath(root.right, curNum, expectedSum, result);
+            } else if (curNum == expectedSum) {
+                if (root.left == null && root.right == null) {
+                    System.out.println(result);
+                }
+            }
+            result.remove(result.size() - 1);
+        }
+    }
 }
