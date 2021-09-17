@@ -17,16 +17,72 @@ package com.kris.sword2offer;
 当遍历到根结点的时候，我们把树看成三部分：根结点，左子树，右子树。
 根据排序链表的定义，根结点将和它的左子树的最大一个结点链接起来，同时它还将和右子树最小的结点链接起来。
  */
+
+import java.util.Stack;
+
+/*
+                 6
+               /  \
+              4    9
+             / \  / \
+            3  5 7  10
+ */
 public class problem_24 {
 
+    public static void main(String[] args) {
+        BinaryTreeNode node7 = new BinaryTreeNode(10, null, null);
+        BinaryTreeNode node6 = new BinaryTreeNode(7, null, null);
+        BinaryTreeNode node5 = new BinaryTreeNode(5, null, null);
+        BinaryTreeNode node4 = new BinaryTreeNode(3, null, null);
+        BinaryTreeNode node3 = new BinaryTreeNode(9, node6, node7);
+        BinaryTreeNode node2 = new BinaryTreeNode(4, node4, node5);
+        BinaryTreeNode node1 = new BinaryTreeNode(6, node2, node3);
+
+        convert(node1);
+    }
+
     public static class BinaryTreeNode {
+        
+        public BinaryTreeNode(int value, BinaryTreeNode left, BinaryTreeNode right) {
+            this.value = value;
+            this.left = left;
+            this.right = right;
+        }
+
         int value;
         BinaryTreeNode left;
         BinaryTreeNode right;
     }
 
     public static BinaryTreeNode convert(BinaryTreeNode root) {
+        // 为什么要用二级指针
+        BinaryTreeNode[] lastNode = new BinaryTreeNode[1];
+        convertNode(root, lastNode);
 
+        BinaryTreeNode head = lastNode[0];
+        while (head != null && head.left != null) {
+            head = head.left;
+        }
+        return head;
+    }
+
+    private static void convertNode(BinaryTreeNode root, BinaryTreeNode[] lastNode) {
+        if (root != null) {
+            if (root.left != null) {
+                convertNode(root.left, lastNode);
+            }
+            root.left = lastNode[0];
+
+            if (lastNode[0] != null) {
+                lastNode[0].right = root;
+            }
+
+            lastNode[0] = root;
+
+            if (root.right != null) {
+                convertNode(root.right, lastNode);
+            }
+        }
     }
 
 }
